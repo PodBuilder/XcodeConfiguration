@@ -6,37 +6,72 @@
 //  Copyright (c) 2014 William Kent. All rights reserved.
 //
 
-SpecBegin(InitialSpecs)
+#import <XcodeConfiguration/XCConfiguration.h>
 
-describe(@"these will fail", ^{
+SpecBegin(XCConfiguration)
 
-    it(@"can do maths", ^{
-        expect(1).to.equal(2);
-    });
-
-    it(@"can read", ^{
-        expect(@"number").to.equal(@"string");
+describe(@"string parsing", ^{
+    it(@"should parse xcconfig text correctly", ^{
+        NSString *source = @"FOO = BAR\n";
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        expect(config.configurationDictionary).to.equal(@{ @"FOO": @"BAR" });
     });
     
-    it(@"will wait and fail", ^AsyncBlock {
-        
+    it(@"should strip comments correctly", ^{
+        NSString *source = @"FOO = BAR // I am a comment\n//I am another comment";
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        expect(config.configurationDictionary).to.equal(@{ @"FOO": @"BAR" });
+    });
+    
+    it(@"should handle empty lines correctly", ^{
+        NSString *source = @"   \n   \n";
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        expect(config.configurationDictionary).to.haveCountOf(0);
     });
 });
 
-describe(@"these will pass", ^{
-    
-    it(@"can do maths", ^{
-        expect(1).beLessThan(23);
+describe(@"dictionary parsing", ^{
+    it(@"should parse a dictionary correctly", ^{
+        NSDictionary *values = @{ @"FOO": @"BAR" };
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        expect(config.configurationDictionary).to.equal(values);
+    });
+});
+
+describe(@"OTHER_LDFLAGS handling", ^{
+    it(@"should expand OTHER_LDFLAGS correctly", ^{
+        NSDictionary *values = @{ @"OTHER_LDFLAGS": @"-lz -framework Foundation -weak_framework UIKit" };
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        
+        expect(config.otherLibraries.allObjects).to.equal(@[ @"z" ]);
+        expect(config.frameworks.allObjects).to.equal(@[ @"Foundation" ]);
+        expect(config.weakLinkedFrameworks.allObjects).to.equal(@[ @"UIKit" ]);
     });
     
-    it(@"can read", ^{
-        expect(@"team").toNot.contain(@"I");
+    it(@"should preserve unhandled OTHER_LDFLAGS", ^{
+        NSDictionary *values = @{ @"OTHER_LDFLAGS": @"-lz -dead_strip" };
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        
+        expect(config.otherLibraries.allObjects).to.equal(@[ @"z" ]);
+        expect(config.attributes[@"OTHER_LDFLAGS"]).to.equal(@"-dead_strip");
     });
     
-    it(@"will wait and fail", ^AsyncBlock {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            done();
-        });
+    it(@"should recreate OTHER_LDFLAGS in -configurationDictionary", ^{
+        XCConfiguration *config = [[XCConfiguration alloc] init];
+        config.attributes[@"OTHER_LDFLAGS"] = @"-dead_strip";
+        [config.otherLibraries addObject:@"z"];
+        [config.frameworks addObject:@"Foundation"];
+        [config.weakLinkedFrameworks addObject:@"UIKit"];
+        
+        // The behavior of the below code is due to the fact
+        // that the order of the words in the OTHER_LDFLAGS value
+        // is not guaranteed to be stable.
+        NSDictionary *values = config.configurationDictionary;
+        NSArray *flags = values[@"OTHER_LDFLAGS"];
+        expect(flags).to.contain(@"-dead_strip");
+        expect(flags).to.contain(@"-framework Foundation");
+        expect(flags).to.contain(@"-weak_framework UIKit");
+        expect(flags).to.contain(@"-lz");
     });
 });
 
