@@ -200,6 +200,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
     [lines addObjectsFromArray:includeLines];
     [lines addObject:@""];
     [lines addObjectsFromArray:settingLines];
+    [lines addObject:@""];
     
     return [lines componentsJoinedByString:@"\n"];
 }
