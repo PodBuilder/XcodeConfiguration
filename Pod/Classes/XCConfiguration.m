@@ -121,18 +121,21 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
     NSArray *flags = [flagString componentsSplitUsingShellQuotingRules];
     NSMutableArray *fixedFlags = [NSMutableArray array];
     
+    BOOL skipNextFlag = NO;
     NSInteger count = flags.count;
     for (NSInteger i = 0; i < count; i++) {
+        if (skipNextFlag) { skipNextFlag = NO; continue; }
+        
         NSString *flag = flags[i];
         
         if ([flag hasPrefix:@"-l"]) {
             [self.otherLibraries addObject:[flag substringFromIndex:2]];
         } else if ([flag hasPrefix:@"-framework"]) {
-            NSInteger offset = [@"-framework" length] + 1;
-            [self.frameworks addObject:[flag substringFromIndex:offset]];
+            [self.frameworks addObject:flags[i + 1]];
+            skipNextFlag = YES;
         } else if ([flag hasPrefix:@"-weak_framework"]) {
-            NSInteger offset = [@"-weak_framework" length] + 1;
-            [self.weakLinkedFrameworks addObject:[flag substringFromIndex:offset]];
+            [self.weakLinkedFrameworks addObject:flags[i + 1]];
+            skipNextFlag = YES;
         } else {
             NSRange range = [flag rangeOfCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             if (!(range.location == NSNotFound && range.length == 0)) {
