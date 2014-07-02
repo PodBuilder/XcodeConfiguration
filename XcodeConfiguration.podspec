@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "XcodeConfiguration"
-  s.version          = "0.1.0"
+  s.version          = "1.0.0"
   s.summary          = "A library to manipulate xcconfig files."
   s.homepage         = "https://github.com/PodBuilder/XcodeConfiguration"
   s.license          = 'MIT'
