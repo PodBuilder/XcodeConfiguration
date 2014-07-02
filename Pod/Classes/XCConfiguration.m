@@ -77,9 +77,12 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
     self = [self init];
     
     if (self) {
+        _attributes = [NSMutableDictionary dictionary];
         NSArray *lines = [sourceCode componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         for (NSString *rawLine in lines) {
             NSString *line = [self stripCommentFromConfigurationFileLine:rawLine];
+            
+            if ([line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0) continue;
             
             NSString *includePath;
             BOOL isInclude = [self extractIncludeFileTarget:&includePath fromConfigurationFileLine:line];
@@ -88,13 +91,11 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
             } else {
                 NSString *key;
                 NSString *value;
-                BOOL isRegularLine = [self extractKey:&key andValue:&value fromConfigurationFileLine:line];
-                
-                if (isRegularLine) {
-                    key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    self.attributes[key] = value;
-                }
+                [self extractKey:&key andValue:&value fromConfigurationFileLine:line];
+
+                key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                self.attributes[key] = value;
             }
         }
     }
@@ -235,6 +236,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
     });
     
     NSTextCheckingResult *match = [includeRegex firstMatchInString:line options:0 range:NSMakeRange(0, line.length)];
+    if (match == nil) return NO;
     
     NSRange range = [match rangeAtIndex:1];
     if (range.location == NSNotFound && range.length == 0) return NO;
@@ -246,7 +248,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
     static NSRegularExpression *lineRegex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        lineRegex = [NSRegularExpression regularExpressionWithPattern:@"(.+?)\\s*=\\s*(.+)" options:0 error:NULL];
+        lineRegex = [NSRegularExpression regularExpressionWithPattern:@"^\\s*(.+?)\\s*=\\s*(.+)$" options:0 error:NULL];
         NSAssert(lineRegex != nil, @"Could not compile regular expression");
     });
     
