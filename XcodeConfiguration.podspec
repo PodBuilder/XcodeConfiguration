@@ -17,9 +17,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/PodBuilder/XcodeConfiguration.git", :tag => s.version.to_s }
 
   s.source_files = 'Pod/Classes'
-  s.requires_arc = true
-  s.resources = 'Pod/Assets/*.png'
-
   s.public_header_files = 'Pod/Classes/**/*.h'
   s.dependency 'NSString+ShellSplit', '~> 1.0'
+  s.requires_arc = true
 end
