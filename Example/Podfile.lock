@@ -1,0 +1,20 @@
+PODS:
+  - Expecta (0.3.0)
+  - Specta (0.2.1)
+  - XcodeConfiguration (0.1.0)
+
+DEPENDENCIES:
+  - Expecta
+  - Specta (~> 0.2.1)
+  - XcodeConfiguration (from `../`)
+
+EXTERNAL SOURCES:
+  XcodeConfiguration:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Expecta: ce8a51b9fad15a2cd573b291cb2909aaed865350
+  Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
+  XcodeConfiguration: 0f8d2756b70c50606a3eee4b778bd54ece302467
+
+COCOAPODS: 0.33.1
