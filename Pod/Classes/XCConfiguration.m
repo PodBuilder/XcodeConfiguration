@@ -74,33 +74,32 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 }
 
 - (id)initWithConfigurationFileContents:(NSString *)sourceCode {
-    self = [self init];
+    NSMutableDictionary *values = [NSMutableDictionary dictionary];
+    NSArray *lines = [sourceCode componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
     
-    if (self) {
-        _attributes = [NSMutableDictionary dictionary];
-        NSArray *lines = [sourceCode componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-        for (NSString *rawLine in lines) {
-            NSString *line = [self stripCommentFromConfigurationFileLine:rawLine];
+    for (NSString *rawLine in lines) {
+        NSString *line = [self stripCommentFromConfigurationFileLine:rawLine];
+        if ([line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0) continue;
+        
+        NSString *includePath;
+        BOOL isInclude = [self extractIncludeFileTarget:&includePath fromConfigurationFileLine:line];
+        
+        if (isInclude) {
+            [self.includedFiles addObject:includePath];
+        } else {
+            NSString *key;
+            NSString *value;
+            BOOL isRegularLine = [self extractKey:&key andValue:&value fromConfigurationFileLine:line];
             
-            if ([line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0) continue;
-            
-            NSString *includePath;
-            BOOL isInclude = [self extractIncludeFileTarget:&includePath fromConfigurationFileLine:line];
-            if (isInclude) {
-                [self.includedFiles addObject:includePath];
-            } else {
-                NSString *key;
-                NSString *value;
-                [self extractKey:&key andValue:&value fromConfigurationFileLine:line];
-
+            if (isRegularLine) {
                 key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                self.attributes[key] = value;
+                values[key] = value;
             }
         }
     }
     
-    return self;
+    return [self initWithConfigurationDictionary:values];
 }
 
 - (id)initByParsingData:(NSData *)data {

@@ -28,7 +28,6 @@
 /// \remarks This is a designated initializer.
 - (id)init;
 /// Creates an instance of \c XcodeConfiguration containing settings obtained from parsing the given string.
-/// \remarks This is a designated initializer.
 - (id)initWithConfigurationFileContents:(NSString *)sourceCode;
 /// Creates an instance of \c XcodeConfiguration containing settings obtained from reading from the given stream.
 - (id)initByParsingData:(NSData *)data;
@@ -36,6 +35,7 @@
 - (id)initByReadingURL:(NSURL *)location;
 /// Creates an instance of \c XcodeConfiguration containing settings obtained from the given dictionary.
 /// \param settings A dictionary in the format of the dictionary returned by the \c configurationDictionary method.
+/// \remarks This is a designated initializer.
 - (id)initWithConfigurationDictionary:(NSDictionary *)settings;
 
 #pragma mark Properties
