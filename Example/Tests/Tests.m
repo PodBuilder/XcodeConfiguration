@@ -48,6 +48,16 @@ describe(@"OTHER_LDFLAGS handling", ^{
         expect(config.weakLinkedFrameworks.allObjects).to.equal(@[ @"UIKit" ]);
     });
     
+    it(@"should expand OTHER_LDFLAGS correctly when parsing a string", ^{
+        NSString *source = @"OTHER_LDFLAGS = -lz -framework Foundation -weak_framework UIKit -dead_strip";
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        
+        expect(config.attributes[@"OTHER_LDFLAGS"]).to.equal(@"-dead_strip");
+        expect(config.frameworks.allObjects).to.equal(@[ @"Foundation" ]);
+        expect(config.weakLinkedFrameworks.allObjects).to.equal(@[ @"UIKit" ]);
+        expect(config.otherLibraries.allObjects).to.equal(@[ @"z" ]);
+    });
+    
     it(@"should preserve unhandled OTHER_LDFLAGS", ^{
         NSDictionary *values = @{ @"OTHER_LDFLAGS": @"-lz -dead_strip" };
         XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
