@@ -1,0 +1,7 @@
+
+target 'XcodeConfiguration', :exclusive => true do
+  pod "XcodeConfiguration", :path => "../"
+
+  pod 'Specta', '~> 0.2.1'
+  pod 'Expecta'
+end
