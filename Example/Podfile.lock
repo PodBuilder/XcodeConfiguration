@@ -1,7 +1,9 @@
 PODS:
   - Expecta (0.3.0)
+  - NSString+ShellSplit (1.0.0)
   - Specta (0.2.1)
-  - XcodeConfiguration (0.1.0)
+  - XcodeConfiguration (0.1.0):
+    - NSString+ShellSplit (~> 1.0)
 
 DEPENDENCIES:
   - Expecta
@@ -14,7 +16,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Expecta: ce8a51b9fad15a2cd573b291cb2909aaed865350
+  NSString+ShellSplit: b38a60f7c4c4a706732a60dce3b4412f36862a6c
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
-  XcodeConfiguration: 0f8d2756b70c50606a3eee4b778bd54ece302467
+  XcodeConfiguration: 43cb5b8adfd92946039dcf9490d493a7b2c9daf9
 
 COCOAPODS: 0.33.1
