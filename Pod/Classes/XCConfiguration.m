@@ -76,6 +76,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 - (id)initWithConfigurationFileContents:(NSString *)sourceCode {
     NSMutableDictionary *values = [NSMutableDictionary dictionary];
     NSArray *lines = [sourceCode componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    NSMutableArray *includedFiles = [NSMutableArray array];
     
     for (NSString *rawLine in lines) {
         NSString *line = [self stripCommentFromConfigurationFileLine:rawLine];
@@ -85,7 +86,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
         BOOL isInclude = [self extractIncludeFileTarget:&includePath fromConfigurationFileLine:line];
         
         if (isInclude) {
-            [self.includedFiles addObject:includePath];
+            [includedFiles addObject:includePath];
         } else {
             NSString *key;
             NSString *value;
@@ -99,7 +100,9 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
         }
     }
     
-    return [self initWithConfigurationDictionary:values];
+    XCConfiguration *config = [self initWithConfigurationDictionary:values];
+    config->_includedFiles = includedFiles;
+    return config;
 }
 
 - (id)initByParsingData:(NSData *)data {
