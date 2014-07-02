@@ -85,4 +85,23 @@ describe(@"OTHER_LDFLAGS handling", ^{
     });
 });
 
+describe(@"#include handling", ^{
+    it(@"should parse #include lines", ^{
+        NSString *source = @"#include \"Foo.xcconfig\"\nFOO = BAR\n";
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        
+        expect(config.includedFiles).to.equal(@[ @"Foo.xcconfig" ]);
+        expect(config.attributes).to.equal(@{ @"FOO": @"BAR" });
+    });
+    
+    it(@"should render #include lines", ^{
+        NSDictionary *values = @{ @"FOO": @"BAR" };
+        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        [config.includedFiles addObject:@"Foo.xcconfig"];
+        
+        NSString *source = [config configurationFileSource];
+        expect(source).to.equal(@"#include \"Foo.xcconfig\"\n\nFOO = BAR\n");
+    });
+});
+
 SpecEnd
