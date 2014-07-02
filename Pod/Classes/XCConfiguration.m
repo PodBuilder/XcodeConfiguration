@@ -152,7 +152,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 #pragma mark Properties
 
 - (NSDictionary *)configurationDictionary {
-    NSMutableDictionary *settings = [self.attributes copy];
+    NSMutableDictionary *settings = [self.attributes mutableCopy];
     NSMutableString *flags = settings[@"OTHER_LDFLAGS"] ?: @"";
     flags = [[flags stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
     
