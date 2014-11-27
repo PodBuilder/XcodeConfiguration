@@ -16,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07921E3D953B98731FAECEB6 /* Pods-XcodeConfiguration.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XcodeConfiguration.debug.xcconfig"; path = "Pods/Target Support Files/Pods-XcodeConfiguration/Pods-XcodeConfiguration.debug.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* XcodeConfiguration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XcodeConfiguration.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -30,7 +31,7 @@
 		7951E924C79E4DD7ABBFFF34 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C1FCF8BEB6564C5EAE4A347F /* libPods-XcodeConfiguration.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-XcodeConfiguration.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D305DF0646B44EE3B57C548E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		E1E13057E96842DA84260D04 /* Pods-XcodeConfiguration.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XcodeConfiguration.xcconfig"; path = "Pods/Pods-XcodeConfiguration.xcconfig"; sourceTree = "<group>"; };
+		DB7153B6AC61C2D26A835EED /* Pods-XcodeConfiguration.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XcodeConfiguration.release.xcconfig"; path = "Pods/Target Support Files/Pods-XcodeConfiguration/Pods-XcodeConfiguration.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +56,7 @@
 				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
-				E1E13057E96842DA84260D04 /* Pods-XcodeConfiguration.xcconfig */,
+				F7ED924180478D7CBA851041 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -107,6 +108,15 @@
 				7951E924C79E4DD7ABBFFF34 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		F7ED924180478D7CBA851041 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				07921E3D953B98731FAECEB6 /* Pods-XcodeConfiguration.debug.xcconfig */,
+				DB7153B6AC61C2D26A835EED /* Pods-XcodeConfiguration.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,7 +198,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-XcodeConfiguration-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-XcodeConfiguration/Pods-XcodeConfiguration-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		58E5DEE47E7346328961EFA1 /* Check Pods Manifest.lock */ = {
@@ -305,7 +315,7 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E1E13057E96842DA84260D04 /* Pods-XcodeConfiguration.xcconfig */;
+			baseConfigurationReference = 07921E3D953B98731FAECEB6 /* Pods-XcodeConfiguration.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -327,7 +337,7 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E1E13057E96842DA84260D04 /* Pods-XcodeConfiguration.xcconfig */;
+			baseConfigurationReference = DB7153B6AC61C2D26A835EED /* Pods-XcodeConfiguration.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
