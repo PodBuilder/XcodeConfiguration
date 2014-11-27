@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary          = "A library to manipulate xcconfig files."
   s.homepage         = "https://github.com/PodBuilder/XcodeConfiguration"
   s.license          = 'MIT'
-  s.author           = { "William Kent" => "https://github.com/wjk011" }
+  s.author           = { "William Kent" => "wjk011+pods@gmail.com" }
   s.source           = { :git => "https://github.com/PodBuilder/XcodeConfiguration.git", :tag => s.version.to_s }
 
   s.source_files = 'Pod/Classes'
