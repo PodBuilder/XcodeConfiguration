@@ -13,19 +13,19 @@ SpecBegin(XCConfiguration)
 describe(@"string parsing", ^{
     it(@"should parse xcconfig text correctly", ^{
         NSString *source = @"FOO = BAR\n";
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationFileContents:source];
         expect(config.configurationDictionary).to.equal(@{ @"FOO": @"BAR" });
     });
     
     it(@"should strip comments correctly", ^{
         NSString *source = @"FOO = BAR // I am a comment\n//I am another comment";
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationFileContents:source];
         expect(config.configurationDictionary).to.equal(@{ @"FOO": @"BAR" });
     });
     
     it(@"should handle empty lines correctly", ^{
         NSString *source = @"   \n   \n";
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationFileContents:source];
         expect(config.configurationDictionary).to.haveCountOf(0);
     });
 });
@@ -33,7 +33,7 @@ describe(@"string parsing", ^{
 describe(@"dictionary parsing", ^{
     it(@"should parse a dictionary correctly", ^{
         NSDictionary *values = @{ @"FOO": @"BAR" };
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationDictionary:values];
         expect(config.configurationDictionary).to.equal(values);
     });
 });
@@ -41,7 +41,7 @@ describe(@"dictionary parsing", ^{
 describe(@"OTHER_LDFLAGS handling", ^{
     it(@"should expand OTHER_LDFLAGS correctly", ^{
         NSDictionary *values = @{ @"OTHER_LDFLAGS": @"-lz -framework Foundation -weak_framework UIKit" };
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationDictionary:values];
         
         expect(config.otherLibraries.allObjects).to.equal(@[ @"z" ]);
         expect(config.frameworks.allObjects).to.equal(@[ @"Foundation" ]);
@@ -50,7 +50,7 @@ describe(@"OTHER_LDFLAGS handling", ^{
     
     it(@"should expand OTHER_LDFLAGS correctly when parsing a string", ^{
         NSString *source = @"OTHER_LDFLAGS = -lz -framework Foundation -weak_framework UIKit -dead_strip";
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationFileContents:source];
         
         expect(config.attributes[@"OTHER_LDFLAGS"]).to.equal(@"-dead_strip");
         expect(config.frameworks.allObjects).to.equal(@[ @"Foundation" ]);
@@ -60,14 +60,14 @@ describe(@"OTHER_LDFLAGS handling", ^{
     
     it(@"should preserve unhandled OTHER_LDFLAGS", ^{
         NSDictionary *values = @{ @"OTHER_LDFLAGS": @"-lz -dead_strip" };
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationDictionary:values];
         
         expect(config.otherLibraries.allObjects).to.equal(@[ @"z" ]);
         expect(config.attributes[@"OTHER_LDFLAGS"]).to.equal(@"-dead_strip");
     });
     
     it(@"should recreate OTHER_LDFLAGS in -configurationDictionary", ^{
-        XCConfiguration *config = [[XCConfiguration alloc] init];
+        XCConfigFile *config = [[XCConfigFile alloc] init];
         config.attributes[@"OTHER_LDFLAGS"] = @"-dead_strip";
         [config.otherLibraries addObject:@"z"];
         [config.frameworks addObject:@"Foundation"];
@@ -88,7 +88,7 @@ describe(@"OTHER_LDFLAGS handling", ^{
 describe(@"#include handling", ^{
     it(@"should parse #include lines", ^{
         NSString *source = @"#include \"Foo.xcconfig\"\nFOO = BAR\n";
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationFileContents:source];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationFileContents:source];
         
         expect(config.includedFiles).to.equal(@[ @"Foo.xcconfig" ]);
         expect(config.attributes).to.equal(@{ @"FOO": @"BAR" });
@@ -96,7 +96,7 @@ describe(@"#include handling", ^{
     
     it(@"should render #include lines", ^{
         NSDictionary *values = @{ @"FOO": @"BAR" };
-        XCConfiguration *config = [[XCConfiguration alloc] initWithConfigurationDictionary:values];
+        XCConfigFile *config = [[XCConfigFile alloc] initWithConfigurationDictionary:values];
         [config.includedFiles addObject:@"Foo.xcconfig"];
         
         NSString *source = [config configurationFileSource];

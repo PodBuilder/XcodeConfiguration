@@ -57,7 +57,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 
 #pragma mark -
 
-@implementation XCConfiguration
+@implementation XCConfigFile
 
 - (id)init {
     return [self initWithConfigurationDictionary:@{}];
@@ -90,7 +90,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
         }
     }
     
-    XCConfiguration *config = [self initWithConfigurationDictionary:values];
+    XCConfigFile *config = [self initWithConfigurationDictionary:values];
     config->_includedFiles = includedFiles;
     return config;
 }
@@ -201,7 +201,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
     return [lines componentsJoinedByString:@"\n"];
 }
 
-- (void)mergeConfiguration:(XCConfiguration *)other {
+- (void)mergeConfiguration:(XCConfigFile *)other {
     for (NSString *key in other.attributes.allKeys) {
         NSString *oldValue = [self.attributes[key] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString *newValue = [other.attributes[key] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -270,7 +270,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 #pragma mark NSCopying
 
 - (instancetype)copyWithZone:(NSZone *)zone {
-    XCConfiguration *copy = [[[self class] allocWithZone:zone] initWithConfigurationDictionary:[self.configurationDictionary copy]];
+    XCConfigFile *copy = [[[self class] allocWithZone:zone] initWithConfigurationDictionary:[self.configurationDictionary copy]];
     copy->_includedFiles = [_includedFiles copy];
     return copy;
 }
@@ -285,7 +285,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
     if (self == object) return YES;
     if (![object isKindOfClass:[self class]]) return NO;
     
-    XCConfiguration *other = object;
+    XCConfigFile *other = object;
     return ([self.attributes isEqual:other.attributes] &&
             [self.frameworks isEqual:other.frameworks] &&
             [self.weakLinkedFrameworks isEqual:other.frameworks] &&

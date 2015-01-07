@@ -22,17 +22,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface XCConfiguration : NSObject <NSCopying>
+@interface XCConfigFile : NSObject <NSCopying>
 
-/// Creates an instance of \c XcodeConfiguration containing no settings.
+/// Creates an instance of \c XCConfigFile containing no settings.
 - (id)init;
-/// Creates an instance of \c XcodeConfiguration containing settings obtained from parsing the given string.
+/// Creates an instance of \c XCConfigFile containing settings obtained from parsing the given string.
 - (id)initWithConfigurationFileContents:(NSString *)sourceCode;
-/// Creates an instance of \c XcodeConfiguration containing settings obtained from reading from the given stream.
+/// Creates an instance of \c XCConfigFile containing settings obtained from reading from the given stream.
 - (id)initByParsingData:(NSData *)data;
-/// Creates an instance of \c XcodeConfiguration containing settings obtained from reading from the given URL.
+/// Creates an instance of \c XCConfigFile containing settings obtained from reading from the given URL.
 - (id)initByReadingURL:(NSURL *)location;
-/// Creates an instance of \c XcodeConfiguration containing settings obtained from the given dictionary.
+/// Creates an instance of \c XCConfigFile containing settings obtained from the given dictionary.
 /// \param settings A dictionary in the format of the dictionary returned by the \c configurationDictionary method.
 - (id)initWithConfigurationDictionary:(NSDictionary *)settings NS_DESIGNATED_INITIALIZER;
 
@@ -47,6 +47,6 @@
 - (NSDictionary *)configurationDictionary;
 - (NSString *)configurationFileSource;
 
-- (void)mergeConfiguration:(XCConfiguration *)other;
+- (void)mergeConfiguration:(XCConfigFile *)other;
 
 @end
