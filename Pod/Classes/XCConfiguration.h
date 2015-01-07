@@ -25,7 +25,6 @@
 @interface XCConfiguration : NSObject <NSCopying>
 
 /// Creates an instance of \c XcodeConfiguration containing no settings.
-/// \remarks This is a designated initializer.
 - (id)init;
 /// Creates an instance of \c XcodeConfiguration containing settings obtained from parsing the given string.
 - (id)initWithConfigurationFileContents:(NSString *)sourceCode;
@@ -35,8 +34,7 @@
 - (id)initByReadingURL:(NSURL *)location;
 /// Creates an instance of \c XcodeConfiguration containing settings obtained from the given dictionary.
 /// \param settings A dictionary in the format of the dictionary returned by the \c configurationDictionary method.
-/// \remarks This is a designated initializer.
-- (id)initWithConfigurationDictionary:(NSDictionary *)settings;
+- (id)initWithConfigurationDictionary:(NSDictionary *)settings NS_DESIGNATED_INITIALIZER;
 
 #pragma mark Properties
 

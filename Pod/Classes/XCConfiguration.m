@@ -60,17 +60,7 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 @implementation XCConfiguration
 
 - (id)init {
-    self = [super init];
-    
-    if (self) {
-        _attributes = [[NSMutableDictionary alloc] init];
-        _includedFiles = [[NSMutableArray alloc] init];
-        _frameworks = [[NSMutableSet alloc] init];
-        _weakLinkedFrameworks = [[NSMutableSet alloc] init];
-        _otherLibraries = [[NSMutableSet alloc] init];
-    }
-    
-    return self;
+    return [self initWithConfigurationDictionary:@{}];
 }
 
 - (id)initWithConfigurationFileContents:(NSString *)sourceCode {
@@ -115,7 +105,13 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 }
 
 - (id)initWithConfigurationDictionary:(NSDictionary *)settings {
-    self = [self init];
+    self = [super init];
+    
+    _attributes = [[NSMutableDictionary alloc] init];
+    _includedFiles = [[NSMutableArray alloc] init];
+    _frameworks = [[NSMutableSet alloc] init];
+    _weakLinkedFrameworks = [[NSMutableSet alloc] init];
+    _otherLibraries = [[NSMutableSet alloc] init];
     
     NSString *flagString = settings[@"OTHER_LDFLAGS"] ?: @"";
     flagString = [[flagString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
