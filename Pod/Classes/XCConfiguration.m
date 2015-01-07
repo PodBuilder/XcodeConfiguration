@@ -270,7 +270,9 @@ static NSArray *XCTranslateDictionary(NSDictionary *dictionary, id (^block)(id k
 #pragma mark NSCopying
 
 - (instancetype)copyWithZone:(NSZone *)zone {
-    return [[[self class] allocWithZone:zone] initWithConfigurationDictionary:[self.configurationDictionary copy]];
+    XCConfiguration *copy = [[[self class] allocWithZone:zone] initWithConfigurationDictionary:[self.configurationDictionary copy]];
+    copy->_includedFiles = [_includedFiles copy];
+    return copy;
 }
 
 #pragma mark NSObject
