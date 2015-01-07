@@ -18,6 +18,6 @@ SPEC CHECKSUMS:
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   NSString+ShellSplit: b38a60f7c4c4a706732a60dce3b4412f36862a6c
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
-  XcodeConfiguration: 0e6c74e6cce86e3ee1419520624e5fffab906add
+  XcodeConfiguration: ae0acc6d688edab552eb7d8b351d4b850f087c16
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.0.beta.1
