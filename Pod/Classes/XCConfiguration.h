@@ -20,8 +20,9 @@
  * THE SOFTWARE.
  */
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
+NS_ASSUME_NONNULL_BEGIN
 @interface XCConfigFile : NSObject <NSCopying>
 
 /// Creates an instance of \c XCConfigFile containing no settings.
@@ -50,3 +51,4 @@
 - (void)mergeConfiguration:(XCConfigFile *)other;
 
 @end
+NS_ASSUME_NONNULL_END
